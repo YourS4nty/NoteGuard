@@ -1,0 +1,94 @@
+<!-- views/noteCreated.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Noteguard - A simple note-taking app with password protection and expiration date. Developed by YourS4nty.">
+  <meta name="keywords" content="note app, password protection, expiration date, YourS4nty, portfolio">
+  <meta name="author" content="YourS4nty">
+  <meta name="robots" content="index, follow">
+  <link rel="shortcut icon" href="../media/NoteGuard.ico" type="image/x-icon">
+  <title>Note Created</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Note Created Successfully</h1>
+
+    <p>Your note was created with ID: <%= noteId %></p>
+    <p style="cursor: pointer; color: #7f5af0;" onclick="copyToClipboard('<%= noteId %>')">Copy ID</p>
+    <p>View your note Here:<a style="color: cyan;" href="/note/<%= noteId %>"> /note/<%= noteId %></a>.</p>
+
+    <p><a href="/">Back to the main page</a></p>
+  </div>
+  <footer>
+    <p style="color: #fffffe;">Made with <span style="color: red;">&lt;3</span> By <a
+        style="color: darkcyan;text-decoration: none;" href="https://Your4Portfolio.vercel.app">YourS4nty</a>
+    </p>
+  </footer>
+
+  <!-- Agregamos el script para copiar al portapapeles -->
+  <script>
+    function copyToClipboard(text) {
+      var tempTextArea = document.createElement("textarea");
+      tempTextArea.value = text;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempTextArea);
+      alert('ID copied to clipboard: ' + text);
+    }
+  </script>
+
+</body>
+
+</html>
+
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #242629;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #16161a;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    color: #fffffe;
+  }
+
+  p {
+    margin-bottom: 10px;
+    color: #94a1b2;
+  }
+
+  a {
+    color: #7f5af0;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 4%;
+    right: 0;
+    background-color: #16161a;
+    border-radius: 10px 0 0 10px;
+    padding: 10px 20px;
+  }
+</style>

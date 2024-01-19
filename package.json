@@ -1,0 +1,19 @@
+{
+  "name": "Noteguard",
+  "version": "1.0.0",
+  "description": "**Noteguard** is a simple note-taking application with password protection and expiration date functionality. Keep your notes safe and secure!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.16.2",
+    "firebase": "^10.7.2",
+    "node-cron": "^1.2.1"
+  },
+  "keywords": [],
+  "author": "YourS4nty",
+  "license": "MIT"
+}
