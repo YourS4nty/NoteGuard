@@ -1,5 +1,5 @@
 {
-  "name": "Noteguard",
+  "name": "noteguard",
   "version": "1.0.0",
   "description": "**Noteguard** is a simple note-taking application with password protection and expiration date functionality. Keep your notes safe and secure!",
   "main": "app.js",

@@ -2,7 +2,7 @@ const express = require('express');
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, serverTimestamp, getDoc, deleteDoc, doc, getDocs } = require('firebase/firestore');
 const cron = require('node-cron');
-const path = require('path');
+const path = require('path')
 
 const app = express();
 
@@ -78,6 +78,10 @@ app.get('/noteCreated/:id', (req, res) => {
     res.render('noteCreated', { noteId: req.params.id });
 });
 
+app.get('/viewById', (req, res) => {
+    res.render('ViewExisting', {error: null, success: null})
+})
+
 
 app.get('/note/:id', async (req, res) => {
     const noteId = req.params.id;
@@ -95,7 +99,7 @@ app.get('/note/:id', async (req, res) => {
                 res.render('viewNote', { note, authenticated: false });
             }
         } else {
-            res.status(404).send('Note not found');
+            res.status(404).send('Note not found Or Expired<hr><a href="/">Back Home</a>');
         }
     } catch (error) {
         console.error('Error fetching the note:', error);

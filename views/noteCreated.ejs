@@ -1,5 +1,3 @@
-<!-- views/noteCreated.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +17,8 @@
   <div class="container">
     <h1>Note Created Successfully</h1>
 
-    <p>Your note was created with ID: <%= noteId %></p>
+    <p>Your note was created with ID: <%= noteId %>
+    </p>
     <p style="cursor: pointer; color: #7f5af0;" onclick="copyToClipboard('<%= noteId %>')">Copy ID</p>
     <p>View your note Here:<a style="color: cyan;" href="/note/<%= noteId %>"> /note/<%= noteId %></a>.</p>
 
@@ -31,7 +30,6 @@
     </p>
   </footer>
 
-  <!-- Agregamos el script para copiar al portapapeles -->
   <script>
     function copyToClipboard(text) {
       var tempTextArea = document.createElement("textarea");

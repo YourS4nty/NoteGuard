@@ -25,23 +25,18 @@
                 </p>
                 <% } %>
 
-                    <h2>Create a New Note</h2>
-                    <form action="/createNote" method="post">
-                        <label for="title">Title:</label>
-                        <input type="text" id="title" name="title" required>
-                        <br>
-                        <label for="content">Content:</label>
-                        <textarea id="content" name="content" required></textarea>
-                        <br>
-                        <label for="expirationDate">Expiration Date:</label>
-                        <input type="date" id="expirationDate" name="expirationDate" required>
-                        <br>
-                        <label for="password">Password (optional):</label>
-                        <input type="password" id="password" name="password">
-                        <br>
-                        <button type="submit">Create Note</button>
+                    <h2>View Existing Notes</h2>
+                    <form id="viewNoteForm" method="get">
+                        <label for="noteId">Note ID:</label>
+                        <input type="text" id="noteId" name="noteId" required>
+                        <button type="button" onclick="submitForm()">View Note</button>
                     </form>
-                    <a class="button" href="/viewById">View Existing Notes</a>
+
+                    <% if (error) { %>
+                        <p style="color: red;">
+                            <%= error %>
+                        </p>
+                        <% } %>
     </div>
     <footer>
         <p style="color: #fffffe;">Made with <span style="color: red;">&lt;3</span> By <a
@@ -73,19 +68,15 @@
         background-color: #161616;
         color: #fffffe;
         position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
     }
 
     .container {
         width: 60%;
-        height: 90%;
+        height: auto;
+        margin: 30px auto 30px auto;
         padding: 20px;
         background-color: #242629;
         overflow: auto;
-        position: relative;
     }
 
     h2 {
@@ -144,23 +135,6 @@
         transition: background-color 0.2s ease-in-out;
     }
 
-    .button {
-        background-color: #7f5af0;
-        color: #fffffe;
-        font-weight: 535;
-        font-size: small;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        position: absolute;
-        left: 2%;
-        bottom: 3%;
-        transition: background-color 0.2s ease-in-out;
-        text-decoration: none;
-    }
-
-    .button:hover,
     button:hover {
         background-color: #6246b7;
         color: #fffffe;
@@ -181,14 +155,7 @@
         }
 
         textarea {
-            min-height: 369px;
-        }
-
-        .button{
-            position: absolute;
-            left: 50%;
-            bottom: 5%;
-            transform: translate(-50%);
+            min-height: 300px;
         }
 
         .footer {
