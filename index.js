@@ -20,6 +20,7 @@ const db = getFirestore(firebaseApp);
 
 app.use(express.urlencoded({ extended: true }));
 app.use('/media', express.static('media'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Auto Deleting At 00:00
