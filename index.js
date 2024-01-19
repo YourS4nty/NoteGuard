@@ -2,6 +2,7 @@ const express = require('express');
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, serverTimestamp, getDoc, deleteDoc, doc, getDocs } = require('firebase/firestore');
 const cron = require('node-cron');
+const path = require('path');
 
 const app = express();
 
