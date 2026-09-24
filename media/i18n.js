@@ -1,0 +1,164 @@
+(() => {
+  const translations = {
+    en: {
+      language: 'Language',
+      'brand.tagline': 'Private notes, on your terms.',
+      'footer.made': 'Made with',
+      'home.eyebrow': 'Secure note sharing',
+      'home.title': 'Create a new note.',
+      'home.intro': 'Write something, set when it should expire, and optionally protect it with a password. Your note is ready to share in seconds.',
+      'home.titleLabel': 'Title',
+      'home.titlePlaceholder': 'e.g. Project handoff',
+      'home.contentLabel': 'Content',
+      'home.contentPlaceholder': 'Write your note here...',
+      'home.expirationLabel': 'Expiration date',
+      'home.expirationHint': 'After this date, the note should no longer be available.',
+      'home.passwordLabel': 'Password',
+      'home.optional': '(optional)',
+      'home.passwordPlaceholder': 'Leave empty for no password',
+      'home.create': 'Create note',
+      'home.viewExisting': 'View existing note',
+      'view.eyebrow': 'Retrieve a note',
+      'view.title': 'Find your note.',
+      'view.intro': 'Enter the note ID you received when the note was created.',
+      'view.idLabel': 'Note ID',
+      'view.idPlaceholder': 'Paste your note ID',
+      'view.button': 'View note',
+      'view.back': 'Back to create note',
+      'password.eyebrow': 'Protected note',
+      'password.title': 'This note is locked.',
+      'password.intro': 'Enter the password to securely access its contents.',
+      'password.label': 'Password',
+      'password.placeholder': 'Enter note password',
+      'password.button': 'Unlock note',
+      'created.eyebrow': 'Note created',
+      'created.title': 'Your note is ready.',
+      'created.intro': 'Save the ID below. You can use it later to retrieve your note.',
+      'created.copy': 'Copy ID',
+      'created.copied': 'Copied ✓',
+      'created.direct': 'Direct link:',
+      'created.open': 'Open note',
+      'created.another': 'Create another',
+      'note.eyebrow': 'Secure note',
+      'note.contentLabel': 'Note content · click to copy',
+      'note.copied': 'Copied to clipboard ✓',
+      'note.protection': 'Protection',
+      'note.expiration': 'Expiration',
+      'note.passwordProtected': 'Password protected',
+      'note.notProtected': 'Not protected',
+      'note.createAnother': 'Create another note',
+      'note.findAnother': 'Find another note',
+      'errors.notFound': 'Note not found or expired',
+      'errors.internal': 'Internal Server Error',
+      'errors.incorrectPassword': 'Incorrect password'
+    },
+    es: {
+      language: 'Idioma',
+      'brand.tagline': 'Notas privadas, bajo tus condiciones.',
+      'footer.made': 'Hecho con',
+      'home.eyebrow': 'Compartir notas seguras',
+      'home.title': 'Crea una nueva nota.',
+      'home.intro': 'Escribe algo, establece cuándo debe caducar y protégelo opcionalmente con una contraseña. Tu nota estará lista para compartir en segundos.',
+      'home.titleLabel': 'Título',
+      'home.titlePlaceholder': 'p. ej. Entrega del proyecto',
+      'home.contentLabel': 'Contenido',
+      'home.contentPlaceholder': 'Escribe tu nota aquí...',
+      'home.expirationLabel': 'Fecha de caducidad',
+      'home.expirationHint': 'Después de esta fecha, la nota ya no debería estar disponible.',
+      'home.passwordLabel': 'Contraseña',
+      'home.optional': '(opcional)',
+      'home.passwordPlaceholder': 'Déjalo vacío para no usar contraseña',
+      'home.create': 'Crear nota',
+      'home.viewExisting': 'Ver nota existente',
+      'view.eyebrow': 'Recuperar una nota',
+      'view.title': 'Encuentra tu nota.',
+      'view.intro': 'Introduce el ID de la nota que recibiste cuando fue creada.',
+      'view.idLabel': 'ID de la nota',
+      'view.idPlaceholder': 'Pega el ID de tu nota',
+      'view.button': 'Ver nota',
+      'view.back': 'Volver a crear una nota',
+      'password.eyebrow': 'Nota protegida',
+      'password.title': 'Esta nota está bloqueada.',
+      'password.intro': 'Introduce la contraseña para acceder a su contenido de forma segura.',
+      'password.label': 'Contraseña',
+      'password.placeholder': 'Introduce la contraseña de la nota',
+      'password.button': 'Desbloquear nota',
+      'created.eyebrow': 'Nota creada',
+      'created.title': 'Tu nota está lista.',
+      'created.intro': 'Guarda el ID de abajo. Podrás usarlo más adelante para recuperar tu nota.',
+      'created.copy': 'Copiar ID',
+      'created.copied': 'Copiado ✓',
+      'created.direct': 'Enlace directo:',
+      'created.open': 'Abrir nota',
+      'created.another': 'Crear otra',
+      'note.eyebrow': 'Nota segura',
+      'note.contentLabel': 'Contenido de la nota · haz clic para copiar',
+      'note.copied': 'Copiado al portapapeles ✓',
+      'note.protection': 'Protección',
+      'note.expiration': 'Caducidad',
+      'note.passwordProtected': 'Protegida con contraseña',
+      'note.notProtected': 'Sin protección',
+      'note.createAnother': 'Crear otra nota',
+      'note.findAnother': 'Buscar otra nota',
+      'errors.notFound': 'Nota no encontrada o caducada',
+      'errors.internal': 'Error interno del servidor',
+      'errors.incorrectPassword': 'Contraseña incorrecta'
+    }
+  };
+
+  const path = location.pathname;
+  const page = path === '/' ? 'home' : path === '/viewById' ? 'view' : path.startsWith('/noteCreated/') ? 'created' : path.startsWith('/note/') ? 'note' : 'password';
+  const titles = {
+    en: { home: 'NoteGuard — Secure Notes', view: 'NoteGuard — Find a Note', created: 'NoteGuard — Note Created', note: document.title, password: 'NoteGuard — Note Locked' },
+    es: { home: 'NoteGuard — Notas seguras', view: 'NoteGuard — Buscar una nota', created: 'NoteGuard — Nota creada', note: document.title, password: 'NoteGuard — Nota bloqueada' }
+  };
+  const descriptions = {
+    en: { home: 'NoteGuard - Create secure notes with optional password protection and expiration dates.', view: 'Find an existing NoteGuard note by its ID.', created: 'Your NoteGuard note was created successfully.', note: 'View a NoteGuard note.', password: 'Enter the password to unlock a protected NoteGuard note.' },
+    es: { home: 'NoteGuard - Crea notas seguras con protección opcional mediante contraseña y fechas de caducidad.', view: 'Encuentra una nota existente de NoteGuard mediante su ID.', created: 'Tu nota de NoteGuard se creó correctamente.', note: 'Visualiza una nota de NoteGuard.', password: 'Introduce la contraseña para desbloquear una nota protegida de NoteGuard.' }
+  };
+
+  const saved = localStorage.getItem('noteguard-language');
+  let language = saved === 'es' || saved === 'en' ? saved : (navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+
+  function translateError(text) {
+    if (!text) return text;
+    const normalized = text.toLowerCase();
+    if (normalized.includes('incorrect password')) return translations[language]['errors.incorrectPassword'];
+    if (normalized.includes('note not found') || normalized.includes('note not found or expired')) return translations[language]['errors.notFound'];
+    if (normalized.includes('internal server error')) return translations[language]['errors.internal'];
+    return text;
+  }
+
+  function apply() {
+    const dict = translations[language];
+    document.documentElement.lang = language;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key]) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (dict[key]) el.placeholder = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-error]').forEach(el => {
+      el.textContent = translateError(el.textContent);
+    });
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.content = descriptions[language][page];
+    if (!(page === 'note' && /—/.test(document.title) && document.title.includes('NoteGuard —') && document.querySelector('h1:not([data-i18n])'))) document.title = titles[language][page];
+    const toggle = document.querySelector('[data-language-toggle]');
+    if (toggle) {
+      toggle.setAttribute('aria-label', `${dict.language}: ${language === 'en' ? 'Español' : 'English'}`);
+      toggle.querySelector('[data-lang-en]').classList.toggle('active', language === 'en');
+      toggle.querySelector('[data-lang-es]').classList.toggle('active', language === 'es');
+    }
+    localStorage.setItem('noteguard-language', language);
+  }
+
+  window.toggleNoteGuardLanguage = () => {
+    language = language === 'en' ? 'es' : 'en';
+    apply();
+  };
+  window.noteGuardLanguage = () => language;
+  document.addEventListener('DOMContentLoaded', apply);
+})();
