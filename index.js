@@ -2,11 +2,10 @@ const express = require('express');
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection, addDoc, serverTimestamp, getDoc, deleteDoc, doc, getDocs } = require('firebase/firestore');
 const cron = require('node-cron');
-const path = require('path')
+const path = require('path');
 
 const app = express();
 
-// Config: Firebase (Yes, it is a bad idea to put the config here, but I'm too lazy to do it properly)
 const firebaseConfig = {
     apiKey: "AIzaSyDx0OTZNXZpWoryTNDztpjbIYchl8RWkio",
     authDomain: "noteguard-11e6b.firebaseapp.com",
@@ -20,22 +19,26 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
 app.use(express.urlencoded({ extended: true }));
-app.use('/media', express.static('media'));
-app.set('media', path.join(__dirname, 'media'));
+app.use('/media', express.static(path.join(__dirname, 'media')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Auto Deleting At 00:00
+function getBaseUrl(req) {
+    const forwardedHost = req.get('x-forwarded-host');
+    const host = forwardedHost || req.get('host');
+    const forwardedProto = req.get('x-forwarded-proto');
+    const protocol = forwardedProto || req.protocol;
+    return `${protocol}://${host}`;
+}
+
 cron.schedule('0 0 * * *', async () => {
     console.log('Running automatic expiration check...');
-
     try {
         const notesCollection = collection(db, 'notes');
         const notesSnapshot = await getDocs(notesCollection);
         const currentDate = new Date();
         notesSnapshot.forEach(async (noteDoc) => {
             const noteData = noteDoc.data();
-
             if (noteData.expirationDate.toDate() < currentDate) {
                 await deleteDoc(doc(db, 'notes', noteDoc.id));
                 console.log(`Note with ID ${noteDoc.id} has expired and has been deleted.`);
@@ -46,16 +49,13 @@ cron.schedule('0 0 * * *', async () => {
     }
 }, { timezone: 'America/New_York' });
 
-// Config: Express
 app.get('/', (_, res) => {
     res.render('index', { error: null, success: null });
 });
 
 app.post('/createNote', async (req, res) => {
     const { title, content, expirationDate, password } = req.body;
-
     try {
-        // Create a new note document in the 'notes' collection
         const docRef = await addDoc(collection(db, 'notes'), {
             title,
             content,
@@ -63,37 +63,32 @@ app.post('/createNote', async (req, res) => {
             password,
             createdAt: serverTimestamp(),
         });
-
         console.log('Note created with ID:', docRef.id);
-
-        // Redirect to the 'noteCreated' page with the note ID
         res.redirect(`/noteCreated/${docRef.id}`);
     } catch (error) {
         console.error('Error creating the note:', error);
-        // Redirect to the main page with an error message
         res.redirect('/?error=Error creating the note. Please try again.');
     }
 });
 
 app.get('/noteCreated/:id', (req, res) => {
-    res.render('noteCreated', { noteId: req.params.id });
+    res.render('noteCreated', {
+        noteId: req.params.id,
+        baseUrl: getBaseUrl(req)
+    });
 });
 
 app.get('/viewById', (req, res) => {
-    res.render('ViewExisting', {error: null, success: null})
-})
-
+    res.render('ViewExisting', { error: null, success: null });
+});
 
 app.get('/note/:id', async (req, res) => {
     const noteId = req.params.id;
-
     try {
         const noteRef = doc(db, 'notes', noteId);
         const noteSnapshot = await getDoc(noteRef);
-
         if (noteSnapshot.exists()) {
             const note = noteSnapshot.data();
-
             if (note.password) {
                 res.render('enterPassword', { noteId });
             } else {
@@ -108,18 +103,14 @@ app.get('/note/:id', async (req, res) => {
     }
 });
 
-
 app.post('/verifyPassword/:id', async (req, res) => {
     const noteId = req.params.id;
     const { password } = req.body;
-
     try {
         const noteRef = doc(db, 'notes', noteId);
         const noteSnapshot = await getDoc(noteRef);
-
         if (noteSnapshot.exists()) {
             const note = noteSnapshot.data();
-
             if (password === note.password) {
                 res.render('viewNote', { note, authenticated: true });
             } else {
@@ -133,7 +124,6 @@ app.post('/verifyPassword/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
