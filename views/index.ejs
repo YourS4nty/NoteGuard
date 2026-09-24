@@ -1,211 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Noteguard - A simple note-taking app with password protection and expiration date. Developed by YourS4nty.">
-    <meta name="keywords" content="note app, password protection, expiration date, YourS4nty, portfolio">
+    <meta name="description" content="NoteGuard - Create secure notes with optional password protection and expiration dates.">
     <meta name="author" content="YourS4nty">
-    <meta name="robots" content="index, follow">
     <link rel="shortcut icon" href="../media/NoteGuard.ico" type="image/x-icon">
-    <title>Welcome You &lt;3</title>
+    <title>NoteGuard — Secure Notes</title>
+    <style>
+        :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f8f7ff;background:#0b0a10;font-synthesis:none;}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 18px;overflow-x:hidden;background:radial-gradient(circle at 15% 15%,rgba(127,90,240,.2),transparent 34%),radial-gradient(circle at 85% 85%,rgba(98,70,183,.16),transparent 32%),#0b0a10;color:#f8f7ff}
+        body:before,body:after{content:"";position:fixed;width:280px;height:280px;border-radius:50%;filter:blur(70px);opacity:.28;pointer-events:none}.body:before{background:#7f5af0}
+        .shell{width:min(760px,100%);position:relative}
+        .glass{background:linear-gradient(135deg,rgba(36,38,41,.72),rgba(22,22,26,.55));border:1px solid rgba(255,255,255,.11);box-shadow:0 24px 70px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:28px}
+        .card{padding:clamp(24px,5vw,48px)}
+        .brand{display:flex;align-items:center;gap:12px;margin-bottom:34px}.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#7f5af0,#6246b7);box-shadow:0 10px 28px rgba(127,90,240,.3);font-weight:800}.brand strong{font-size:1.05rem}.brand span{display:block;color:#94a1b2;font-size:.8rem;margin-top:2px}
+        .eyebrow{color:#a995ff;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;letter-spacing:-.04em;margin-bottom:12px} .intro{color:#aeb0bb;line-height:1.65;max-width:600px;margin-bottom:30px}
+        .message{padding:13px 15px;border-radius:14px;margin-bottom:20px;border:1px solid rgba(255,255,255,.1);font-size:.92rem}.error{background:rgba(239,68,68,.1);color:#ffb4b4;border-color:rgba(239,68,68,.25)}.success{background:rgba(74,222,128,.08);color:#b9f7ca;border-color:rgba(74,222,128,.2)}
+        form{display:grid;gap:18px}.field{display:grid;gap:8px}label{color:#c4c5ce;font-size:.88rem;font-weight:600}label span{color:#777985;font-weight:400}.hint{color:#737581;font-size:.76rem;margin-top:-2px}
+        input,textarea{width:100%;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(10,10,15,.62);color:#fff;padding:13px 14px;outline:none;font:inherit;transition:border-color .2s,box-shadow .2s,background .2s}input:focus,textarea:focus{border-color:rgba(127,90,240,.75);box-shadow:0 0 0 4px rgba(127,90,240,.13);background:rgba(10,10,15,.78)}textarea{min-height:190px;resize:vertical;line-height:1.55}input::placeholder,textarea::placeholder{color:#5f606a}
+        .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px}button,.secondary{min-height:46px;padding:0 18px;border-radius:13px;border:1px solid transparent;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s,background .2s}.primary{background:linear-gradient(135deg,#8b6cff,#6c4fe1);color:#fff;box-shadow:0 10px 24px rgba(127,90,240,.25)}.secondary{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.1);color:#dedee7}.primary:hover,.secondary:hover{transform:translateY(-1px)}.primary:hover{box-shadow:0 14px 30px rgba(127,90,240,.34)}.secondary:hover{background:rgba(255,255,255,.08)}button:focus-visible,a:focus-visible{outline:2px solid #a995ff;outline-offset:3px}
+        footer{text-align:center;color:#686a76;font-size:.78rem;margin-top:18px}footer a{color:#9b87ff;text-decoration:none}footer a:hover{text-decoration:underline}
+        @media(max-width:560px){body{padding:18px 12px;align-items:flex-start}.card{padding:24px 18px;border-radius:22px}.brand{margin-bottom:28px}.actions{display:grid;grid-template-columns:1fr}.actions>*{width:100%}textarea{min-height:180px}}
+        @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <% if (error) { %>
-            <p style="color: red;">
-                <%= error %>
-            </p>
-            <% } else if (success) { %>
-                <p style="color: green;">
-                    <%= success %>
-                </p>
-                <% } %>
-
-                    <h2>Create a New Note</h2>
-                    <form action="/createNote" method="post">
-                        <label for="title">Title:</label>
-                        <input type="text" id="title" name="title" required>
-                        <br>
-                        <label for="content">Content:</label>
-                        <textarea id="content" name="content" required></textarea>
-                        <br>
-                        <label for="expirationDate">Expiration Date:</label>
-                        <input type="date" id="expirationDate" name="expirationDate" required>
-                        <br>
-                        <label for="password">Password (optional):</label>
-                        <input type="password" id="password" name="password">
-                        <br>
-                        <button type="submit">Create Note</button>
-                    </form>
-                    <a class="button" href="/viewById">View Existing Notes</a>
-    </div>
-    <footer>
-        <p style="color: #fffffe;">Made with <span style="color: red;">&lt;3</span> By <a
-                style="color: darkcyan;text-decoration: none;" href="https://Your4Portfolio.vercel.app">YourS4nty</a>
-        </p>
-    </footer>
+    <main class="shell">
+        <section class="glass card">
+            <div class="brand"><div class="logo" aria-hidden="true">N</div><div><strong>NoteGuard</strong><span>Private notes, on your terms.</span></div></div>
+            <div class="eyebrow">Secure note sharing</div>
+            <h1>Create a new note.</h1>
+            <p class="intro">Write something, set when it should expire, and optionally protect it with a password. Your note is ready to share in seconds.</p>
+            <% if (error) { %><div class="message error" role="alert"><%= error %></div><% } else if (success) { %><div class="message success" role="status"><%= success %></div><% } %>
+            <form action="/createNote" method="post">
+                <div class="field"><label for="title">Title</label><input type="text" id="title" name="title" placeholder="e.g. Project handoff" autocomplete="off" required></div>
+                <div class="field"><label for="content">Content</label><textarea id="content" name="content" placeholder="Write your note here..." required></textarea></div>
+                <div class="field"><label for="expirationDate">Expiration date</label><input type="date" id="expirationDate" name="expirationDate" required><span class="hint">After this date, the note should no longer be available.</span></div>
+                <div class="field"><label for="password">Password <span>(optional)</span></label><input type="password" id="password" name="password" placeholder="Leave empty for no password" autocomplete="new-password"></div>
+                <div class="actions"><button class="primary" type="submit">Create note <span aria-hidden="true">→</span></button><a class="secondary" href="/viewById">View existing note</a></div>
+            </form>
+        </section>
+        <footer>Made with <span aria-hidden="true">♥</span> by <a href="https://Your4Portfolio.vercel.app">YourS4nty</a></footer>
+    </main>
 </body>
-
-<script>
-    function submitForm() {
-        var noteId = document.getElementById("noteId").value;
-        document.getElementById("viewNoteForm").action = "/note/" + noteId;
-        document.getElementById("viewNoteForm").submit();
-    }
-</script>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html,
-    body {
-        height: 100%;
-        width: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #161616;
-        color: #fffffe;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-
-    .container {
-        width: 60%;
-        height: 90%;
-        padding: 20px;
-        background-color: #242629;
-        overflow: auto;
-        position: relative;
-    }
-
-    h2 {
-        margin: 10px 0;
-    }
-
-    hr {
-        margin: 20px 0;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #94a1b2;
-    }
-
-    input,
-    textarea {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: none;
-        border-radius: 4px;
-        outline: none;
-        box-sizing: border-box;
-        background-color: #16161a;
-        color: #fffffe;
-    }
-
-    textarea {
-        resize: none;
-        min-height: 200px;
-    }
-
-    input[type="datetime-local"] {
-        color: #fff;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: none;
-        border-radius: 4px;
-        outline: none;
-        box-sizing: border-box;
-        background-color: #16161a;
-        cursor: pointer;
-    }
-
-
-    button {
-        background-color: #7f5af0;
-        color: #fffffe;
-        font-weight: 535;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-    }
-
-    .button {
-        background-color: #7f5af0;
-        color: #fffffe;
-        font-weight: 535;
-        font-size: small;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        position: absolute;
-        left: 2%;
-        bottom: 3%;
-        transition: background-color 0.2s ease-in-out;
-        text-decoration: none;
-    }
-
-    .button:hover,
-    button:hover {
-        background-color: #6246b7;
-        color: #fffffe;
-    }
-
-    footer {
-        position: fixed;
-        bottom: 4%;
-        right: 0;
-        background-color: #242629;
-        border-radius: 10px 0 0 10px;
-        padding: 10px 20px;
-    }
-
-    @media (max-width: 700px) {
-        .container {
-            width: 90%;
-            height: 95%;
-            position: relative;
-        }
-
-        textarea {
-            min-height: 369px;
-        }
-
-        .button{
-            position: absolute;
-            right: 2%;
-            left: auto;
-            bottom: 2%x;
-            width: 150px;
-            text-align: center;
-        }
-
-         footer {
-            position: absolute;
-            width: 250px;
-            text-align: center;
-            bottom: 0%;
-            left: 50%;
-            border-radius: 10px 10px 0 0;
-            transform: translate(-50%);
-        }
-    }
-</style>
-
 </html>
